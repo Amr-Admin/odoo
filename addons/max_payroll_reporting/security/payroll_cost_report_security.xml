@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="payroll_cost_report_rule_multi_company" model="ir.rule">
+        <field name="name">Payroll Cost Report Multi Company</field>
+        <field name="model_id" ref="model_payroll_cost_report"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('hr_payroll.group_hr_payroll_user')), (4, ref('hr_payroll.group_hr_payroll_manager'))]"/>
+    </record>
+</odoo>

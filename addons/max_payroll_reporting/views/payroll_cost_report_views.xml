@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_payroll_cost_report_tree" model="ir.ui.view">
+        <field name="name">payroll.cost.report.tree</field>
+        <field name="model">payroll.cost.report</field>
+        <field name="arch" type="xml">
+            <list string="Advanced Payroll Reports" create="false" edit="false" delete="false" export_xlsx="1">
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="company_id"/>
+                <field name="department_id"/>
+                <field name="employee_id"/>
+                <field name="project_id"/>
+                <field name="basic_salary" sum="Basic Salary"/>
+                <field name="allowances" sum="Allowances"/>
+                <field name="deductions" sum="Deductions"/>
+                <field name="net_salary" sum="Net Salary"/>
+                <field name="employer_cost" sum="Employer Cost"/>
+                <field name="analytic_amount" sum="Analytic Amount"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_payroll_cost_report_pivot" model="ir.ui.view">
+        <field name="name">payroll.cost.report.pivot</field>
+        <field name="model">payroll.cost.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Advanced Payroll Reports" disable_linking="true">
+                <field name="company_id" type="row"/>
+                <field name="department_id" type="row"/>
+                <field name="employee_id" type="row"/>
+                <field name="project_id" type="col"/>
+                <field name="date_to" type="col" interval="month"/>
+                <field name="basic_salary" type="measure"/>
+                <field name="allowances" type="measure"/>
+                <field name="deductions" type="measure"/>
+                <field name="net_salary" type="measure"/>
+                <field name="employer_cost" type="measure"/>
+                <field name="analytic_amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_payroll_cost_report_graph" model="ir.ui.view">
+        <field name="name">payroll.cost.report.graph</field>
+        <field name="model">payroll.cost.report</field>
+        <field name="arch" type="xml">
+            <graph string="Advanced Payroll Reports" type="bar" sample="1">
+                <field name="date_to" interval="month"/>
+                <field name="net_salary" type="measure"/>
+                <field name="employer_cost" type="measure"/>
+                <field name="analytic_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_payroll_cost_report_search" model="ir.ui.view">
+        <field name="name">payroll.cost.report.search</field>
+        <field name="model">payroll.cost.report</field>
+        <field name="arch" type="xml">
+            <search string="Advanced Payroll Reports">
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="company_id"/>
+                <field name="department_id"/>
+                <field name="project_id"/>
+                <field name="employee_id"/>
+
+                <filter name="current_month" string="Current Month" domain="[
+                    ('date_from', '&gt;=', context_today().replace(day=1)),
+                    ('date_to', '&lt;=', (context_today().replace(day=1) + relativedelta(months=1, days=-1)))
+                ]"/>
+                <separator/>
+                <filter name="group_by_company" string="Company" context="{'group_by': 'company_id'}"/>
+                <filter name="group_by_department" string="Department" context="{'group_by': 'department_id'}"/>
+                <filter name="group_by_project" string="Project" context="{'group_by': 'project_id'}"/>
+                <filter name="group_by_employee" string="Employee" context="{'group_by': 'employee_id'}"/>
+                <filter name="group_by_month" string="Month" context="{'group_by': 'date_to:month'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_payroll_cost_report" model="ir.actions.act_window">
+        <field name="name">Advanced Payroll Reports</field>
+        <field name="res_model">payroll.cost.report</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="search_view_id" ref="view_payroll_cost_report_search"/>
+        <field name="context">{'search_default_group_by_month': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Advanced payroll reporting by employee, department, and analytic account.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_payroll_cost_report"
+        name="Advanced Payroll Reports"
+        parent="hr_payroll.menu_hr_payroll_reporting"
+        action="action_payroll_cost_report"
+        sequence="90"
+        groups="hr_payroll.group_hr_payroll_user,hr_payroll.group_hr_payroll_manager"
+    />
+</odoo>
