@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_payroll_detailed_report_hr_user,access.hr.payroll.detailed.report.hr.user,model_hr_payroll_detailed_report,hr.group_hr_user,1,0,0,0
