@@ -92,7 +92,7 @@ class HrPayrollDetailedReport(models.Model):
                 JOIN hr_employee emp ON emp.id = ps.employee_id
                 LEFT JOIN hr_contract ct ON ct.id = ps.contract_id
                 LEFT JOIN line_agg la ON la.slip_id = ps.id
-                WHERE ps.state = 'done'
+                WHERE ps.state IN ('done', 'paid')
             )
             """
         )
