@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_payroll_detailed_report_list" model="ir.ui.view">
+        <field name="name">hr.payroll.detailed.report.list</field>
+        <field name="model">hr.payroll.detailed.report</field>
+        <field name="arch" type="xml">
+            <list string="Payroll Detailed Report" create="false" edit="false" delete="false" default_order="employee_id,date_from desc" export_xlsx="1">
+                <field name="period_year" optional="show"/>
+                <field name="period_month" optional="show"/>
+                <field name="date_from" optional="show"/>
+                <field name="date_to" optional="show"/>
+                <field name="employee_code" optional="show"/>
+                <field name="employee_id" optional="show"/>
+                <field name="name" optional="show"/>
+                <field name="name_ar" optional="hide"/>
+                <field name="identification_id" optional="hide"/>
+                <field name="department_id" optional="show"/>
+                <field name="job_id" optional="show"/>
+                <field name="contract_id" optional="hide"/>
+                <field name="hire_date" optional="hide"/>
+                <field name="end_date" optional="hide"/>
+                <field name="analytic_account_id" optional="hide"/>
+                <field name="wage" optional="show" sum="Total Wage"/>
+                <field name="transportation_allowance" optional="show" sum="Transportation"/>
+                <field name="basic" optional="show" sum="Total Basic"/>
+                <field name="other_allowances" optional="show" sum="Other Allowances"/>
+                <field name="gross" optional="show" sum="Gross"/>
+                <field name="net" optional="show" sum="Net"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_payroll_detailed_report_search" model="ir.ui.view">
+        <field name="name">hr.payroll.detailed.report.search</field>
+        <field name="model">hr.payroll.detailed.report</field>
+        <field name="arch" type="xml">
+            <search string="Payroll Detailed Report">
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="period_month"/>
+                <field name="period_year"/>
+
+                <filter name="this_month" string="This Month" domain="[
+                    ('date_from', '&gt;=', context_today().replace(day=1)),
+                    ('date_to', '&lt;=', (context_today().replace(day=1) + relativedelta(months=1, days=-1)))
+                ]"/>
+
+                <separator/>
+                <filter name="group_department" string="Department" context="{'group_by': 'department_id'}"/>
+                <filter name="group_employee" string="Employee" context="{'group_by': 'employee_id'}"/>
+                <filter name="group_period" string="Period" context="{'group_by': 'date_to:month'}"/>
+                <filter name="group_year" string="Year" context="{'group_by': 'period_year'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_hr_payroll_detailed_report" model="ir.actions.act_window">
+        <field name="name">Payroll Detailed Report</field>
+        <field name="res_model">hr.payroll.detailed.report</field>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="view_hr_payroll_detailed_report_search"/>
+    </record>
+
+    <menuitem
+        id="menu_hr_payroll_detailed_report"
+        name="Payroll Detailed Report"
+        parent="hr_payroll.menu_hr_payroll_reporting"
+        action="action_hr_payroll_detailed_report"
+        sequence="80"
+        groups="hr.group_hr_user"
+    />
+</odoo>
