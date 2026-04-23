@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_payroll_tax_monthly_report_manager,payroll.tax.monthly.report manager,model_payroll_tax_monthly_report,hr_payroll.group_hr_payroll_manager,1,1,1,1
+access_payroll_tax_monthly_report_officer,payroll.tax.monthly.report officer,model_payroll_tax_monthly_report,hr_payroll.group_hr_payroll_user,1,0,0,0
+access_payroll_tax_export_wizard_manager,payroll.tax.export.wizard manager,model_payroll_tax_export_wizard,hr_payroll.group_hr_payroll_manager,1,1,1,1
+access_payroll_tax_export_wizard_officer,payroll.tax.export.wizard officer,model_payroll_tax_export_wizard,hr_payroll.group_hr_payroll_user,1,0,0,0

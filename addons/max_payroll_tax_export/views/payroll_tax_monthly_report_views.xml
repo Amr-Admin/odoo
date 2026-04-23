@@ -1,0 +1,54 @@
+<odoo>
+    <record id="view_payroll_tax_monthly_report_tree" model="ir.ui.view">
+        <field name="name">payroll.tax.monthly.report.tree</field>
+        <field name="model">payroll.tax.monthly.report</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false" delete="false">
+                <field name="company_id"/>
+                <field name="year"/>
+                <field name="month"/>
+                <field name="employee_id"/>
+                <field name="national_id"/>
+                <field name="employee_code"/>
+                <field name="basic_salary"/>
+                <field name="taxable_allowances"/>
+                <field name="deductions"/>
+                <field name="employee_social_insurance"/>
+                <field name="employer_social_insurance"/>
+                <field name="tax_amount"/>
+                <field name="net_salary"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_payroll_tax_monthly_report_search" model="ir.ui.view">
+        <field name="name">payroll.tax.monthly.report.search</field>
+        <field name="model">payroll.tax.monthly.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="company_id"/>
+                <field name="month"/>
+                <field name="year"/>
+                <filter name="group_by_company" string="Company" context="{'group_by':'company_id'}"/>
+                <filter name="group_by_year" string="Year" context="{'group_by':'year'}"/>
+                <filter name="group_by_month" string="Month" context="{'group_by':'month'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_payroll_tax_monthly_report" model="ir.actions.act_window">
+        <field name="name">Payroll Tax Monthly Export</field>
+        <field name="res_model">payroll.tax.monthly.report</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="view_payroll_tax_monthly_report_search"/>
+        <field name="context">{'search_default_group_by_company': 1}</field>
+    </record>
+
+    <menuitem id="menu_payroll_tax_monthly_report"
+              name="Payroll Tax Monthly Export"
+              parent="hr_payroll.menu_hr_payroll_reporting"
+              action="action_payroll_tax_monthly_report"
+              sequence="90"
+              groups="hr_payroll.group_hr_payroll_user,hr_payroll.group_hr_payroll_manager"/>
+</odoo>
